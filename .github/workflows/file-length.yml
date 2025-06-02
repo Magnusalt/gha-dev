@@ -49,6 +49,5 @@ jobs:
           } else {
             console.log(`✅ All files are within the ${threshold}-line limit.`);
           }
-        inputs: |
-          line-threshold: '300'
-          extensions: '.cs,.js,.ts,.sql'
+        line-threshold: '300'
+        extensions: '.cs,.js,.ts,.sql'
