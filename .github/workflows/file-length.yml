@@ -1,0 +1,54 @@
+name: Scan for Long Files
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check-file-lengths:
+    runs-on: ubuntu-latest
+    name: Check for source files with too many lines
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Scan for large files
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const threshold = parseInt(core.getInput('line-threshold')) || 300;
+          const extensions = core.getInput('extensions') || '.cs,.js,.ts,.sql';
+
+          const { execSync } = require('child_process');
+          const exts = extensions.split(',').map(e => e.trim()).filter(e => e.length);
+
+          const files = execSync('git ls-files', { encoding: 'utf-8' })
+            .split('\n')
+            .filter(f => exts.some(ext => f.endsWith(ext)));
+
+          const longFiles = [];
+
+          for (const file of files) {
+            try {
+              const lineCount = parseInt(execSync(`wc -l < "${file}"`, { encoding: 'utf-8' }).trim());
+              if (lineCount > threshold) {
+                longFiles.push({ file, lineCount });
+              }
+            } catch (err) {
+              console.warn(`Error reading file ${file}:`, err.message);
+            }
+          }
+
+          if (longFiles.length > 0) {
+            let msg = `Found ${longFiles.length} file(s) exceeding the threshold of ${threshold} lines:\n`;
+            for (const { file, lineCount } of longFiles) {
+              msg += `- ${file}: ${lineCount} lines\n`;
+            }
+            core.warning(msg);
+          } else {
+            console.log(`✅ All files are within the ${threshold}-line limit.`);
+          }
+        inputs: |
+          line-threshold: '300'
+          extensions: '.cs,.js,.ts,.sql'
