@@ -50,5 +50,5 @@ jobs:
             console.log(`✅ All files are within the ${threshold}-line limit.`);
           }
       env:
-        LINE_THRESHOLD: '300'
+        LINE_THRESHOLD: '90'
         EXTENSIONS: '.cs,.js,.ts,.sql'
