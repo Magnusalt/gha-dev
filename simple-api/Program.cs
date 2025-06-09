@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Mvc;
 using simple_api;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,7 @@ builder.Services.AddSingleton<EventBasedRelay>();
 
 var app = builder.Build();
 
-app.MapGet("/user/{username}", (DataAccessLayer dal, string username) =>
+app.MapGet("/user/{username}", (DataAccessLayer dal, [FromQuery] string username) =>
     dal.GetUserInformation(username));
 
 app.MapGet("/trigger", ctx =>
