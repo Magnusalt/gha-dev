@@ -9,7 +9,7 @@ public class DataAccessLayer
         var connection = new SqlConnection();
 
         var command = connection.CreateCommand();
-        command.CommandText = $"SELECT * FROM UserInformation WHERE Username = '{username}'";
+        command.CommandText = "SELECT * FROM UserInformation WHERE Username = '" + username + "'";
         command.Connection.Open();
         var reader = command.ExecuteReader();
         if (reader.HasRows && reader.Read())
