@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using simple_api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,9 @@ builder.Services.AddKeyedTransient<ICustomService, CustomServiceB>("B");
 builder.Services.AddSingleton<EventBasedRelay>();
 
 var app = builder.Build();
+
+app.MapGet("/user/{username}", (DataAccessLayer dal, string username) =>
+    dal.GetUserInformation(username));
 
 app.MapGet("/trigger", ctx =>
 {
@@ -31,7 +35,7 @@ app.MapGet("/eventBasedEvent", (EventBasedRelay relay, HttpContext ctx) =>
     }
 
     relay.OnEvent += OnRelayEvent;
-    
+
     async IAsyncEnumerable<string> Processor()
     {
         try
