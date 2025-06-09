@@ -6,7 +6,7 @@ public class DataAccessLayer
 {
     public UserInformation? GetUserInformation(string username)
     {
-        var connection = new SqlConnection();
+        var connection = new SqlConnection("ConnectionString");
 
         var command = connection.CreateCommand();
         command.CommandText = "SELECT * FROM UserInformation WHERE Username = '" + username + "'";
