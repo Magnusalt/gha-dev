@@ -10,7 +10,7 @@ builder.Services.AddSingleton<EventBasedRelay>();
 
 var app = builder.Build();
 
-app.MapGet("/user/{username}", (DataAccessLayer dal, [FromQuery] string username) =>
+app.MapGet("/user/{username}", (DataAccessLayer dal, [FromRoute] string username) =>
     dal.GetUserInformation(username));
 
 app.MapGet("/trigger", ctx =>
