@@ -58,7 +58,7 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
-        packs: +security-extended
+        queries: +security-extended
 
     - name: Restore dependencies
       if: matrix.language == 'csharp'
