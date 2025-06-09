@@ -17,7 +17,7 @@ jobs:
       uses: actions/github-script@v7
       with:
         script: |
-          const threshold = parseInt(core.getInput('line-threshold')) || 300;
+          const threshold = parseInt(core.getInput('LINE_THRESHOLD')) || 300;
           const extensions = core.getInput('extensions') || '.cs,.js,.ts,.sql';
 
           const { execSync } = require('child_process');
