@@ -42,7 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [actions, c-sharp]
+        language: [actions, csharp]
           
     steps:
     - name: Checkout repository
