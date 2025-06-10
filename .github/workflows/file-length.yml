@@ -8,8 +8,6 @@ on:
 
 jobs:
   check-file-lengths:
-    permissions:
-      contents: read
     runs-on: ubuntu-latest
     name: Check for source files with too many lines
 
