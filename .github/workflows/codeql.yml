@@ -55,13 +55,5 @@ jobs:
         languages: ${{ matrix.language }}
         queries: +security-extended
 
-    - name: Restore dependencies
-      if: matrix.language == 'csharp'
-      run: dotnet restore
-
-    - name: Build the project
-      if: matrix.language == 'csharp'
-      run: dotnet build --no-restore --configuration Release
-
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
