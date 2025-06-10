@@ -1,4 +1,6 @@
 name: Scan for Long Files
+permissions:
+  contents: read
 
 on:
   push:
