@@ -1,5 +1,5 @@
 
-name: "CodeQL for Actions and C#"
+name: "CodeQL Advanced"
 
 on:
   push:
