@@ -8,11 +8,17 @@ on:
     branches: [ "main" ]
   schedule:
     - cron: '22 21 * * 3'
+  workflow_call:
+    inputs:
+      languages:
+        description: "JSON array of languages"
+        required: false
+        type: string
 
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     permissions:
       security-events: write
       packages: read
@@ -21,25 +27,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [actions, csharp]
+        language: ${{ fromJson(inputs.languages || '["actions","csharp"]') }}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Initialize CodeQL (C#)
-      if: matrix.language == 'csharp'
+
+    - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
-        languages: csharp
-        build-mode: autobuild
+        languages: ${{ matrix.language }}
         queries: +security-extended
 
-    - name: Initialize CodeQL (Actions)
-      if: matrix.language == 'actions'
-      uses: github/codeql-action/init@v3
-      with:
-        languages: actions
-        queries: +security-extended
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
