@@ -9,15 +9,16 @@ on:
         required: false
         type: string
 
+permissions:
+  security-events: write
+  packages: read
+  actions: read
+  contents: read
+
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-      packages: read
-      actions: read
-      contents: read
     strategy:
       fail-fast: false
       matrix:
