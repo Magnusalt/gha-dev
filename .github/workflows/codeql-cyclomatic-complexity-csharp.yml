@@ -27,7 +27,7 @@ jobs:
       with:
         languages: ${{ matrix.language }}
         queries: |
-          ./.github/codeql-queries/cyclomatic-complexity.ql
+          ./.github/codeql
 
     - name: Autobuild
       uses: github/codeql-action/autobuild@v3
