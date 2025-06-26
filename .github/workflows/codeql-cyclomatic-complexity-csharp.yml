@@ -29,7 +29,6 @@ jobs:
         queries: |
           ./.github/codeql-queries
 
-
     - name: Autobuild
       uses: github/codeql-action/autobuild@v3
 
