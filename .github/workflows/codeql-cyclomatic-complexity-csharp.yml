@@ -1,41 +1,42 @@
-
-name: "CodeQL with Security Extended Queries"
+name: CodeQL Cyclomatic Complexity Analysis
 
 on:
   workflow_call:
-    inputs:
-      languages:
-        description: "JSON array of languages, if not provided, defaults to ['actions']"
-        required: false
-        type: string
 
 permissions:
   security-events: write
-  packages: read
   actions: read
   contents: read
 
 jobs:
   analyze:
-    name: Analyze (${{ matrix.language }})
+    name: Analyze cyclomatic complexity with CodeQL
     runs-on: ubuntu-24.04
+
     strategy:
       fail-fast: false
       matrix:
-        language: ${{ fromJson(inputs.languages || '["actions"]') }}
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+        language: ['csharp']
 
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
-        queries: +security-extended
+        queries: |
+          ./.github/codeql-queries
+
 
     - name: Autobuild
       uses: github/codeql-action/autobuild@v3
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
+
+    - name: Upload Complexity Report
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: results.sarif
